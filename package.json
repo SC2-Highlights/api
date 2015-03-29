@@ -1,0 +1,22 @@
+{
+  "name": "sc2hl-api",
+  "version": "0.0.1",
+  "description": "SC2HL's back end api for the front end to contact",
+  "main": "server.js",
+  "dependencies": {
+    "express": "~4.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Toasts/sc2hl-api.git"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/Toasts/sc2hl-api/issues"
+  }
+}
