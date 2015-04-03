@@ -4,7 +4,8 @@
   "description": "SC2HL's back end api for the front end to contact",
   "main": "server.js",
   "dependencies": {
-    "express": "~4.12.3"
+    "express": "~4.12.3",
+    "pg": "~4.3.0"
   },
   "devDependencies": {},
   "scripts": {
