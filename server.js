@@ -9,7 +9,6 @@ var port = 3000;
 dbHandler.connect(config.db.credentials);
 
 var app = express();
-var router = express.Router();
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost');
@@ -19,7 +18,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-routing(app, router, dbHandler);
+routing(app, dbHandler);
 
 app.listen(config.port);
 console.log('listening on port: ' + config.port);

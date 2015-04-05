@@ -1,4 +1,6 @@
-module.exports = function(router, dbClient) {
+var express = require('express');
+
+module.exports = function(dbClient) {
     var load = function (req, res) {
         var id = req.params.id;
 
@@ -19,8 +21,10 @@ module.exports = function(router, dbClient) {
         });
     }
 
-    router.get('/post/:id', load);
-    router.get('/post/', loadAll);
+    var router = express.Router();
+
+    router.get('/:id', load);
+    router.get('/', loadAll);
 
     return router;
 }

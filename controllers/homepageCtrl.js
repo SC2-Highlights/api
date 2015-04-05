@@ -1,4 +1,6 @@
-module.exports = function(router, dbClient) {
+var express = require('express');
+
+module.exports = function(dbClient) {
     var loadPost = function (req, res) {
         var id = req.params.id;
 
@@ -14,13 +16,18 @@ module.exports = function(router, dbClient) {
         var sql = 'SELECT * FROM homepage_post WHERE deleted IS FALSE';
         var query = dbClient.query(sql);
 
+        console.log('loadallpost');
+
         query.on('end', function(result) {
+            console.log(result.rows);
             res.status(200).json(result.rows);
         });
     }
 
-    router.get('/post/:id', loadPost);
-    router.get('/post/', loadAllPost);
+    var router = express.Router();
+
+    router.get('/:id', loadPost);
+    router.get('/', loadAllPost);
 
     return router;
 }
