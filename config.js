@@ -1,4 +1,5 @@
 module.exports = {
+    port: 3000,
     db: {
         credentials: {
             user: 'sc2hl',

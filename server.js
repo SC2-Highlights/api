@@ -4,6 +4,8 @@ var config = require('./config');
 var routing = require('./routing');
 var dbHandler = require('./services/dbhandler');
 
+var port = 3000;
+
 dbHandler.connect(config.db.credentials);
 
 var app = express();
@@ -19,4 +21,5 @@ app.use(function (req, res, next) {
 
 routing(app, router, dbHandler);
 
-app.listen(3000);
+app.listen(config.port);
+console.log('listening on port: ' + config.port);
