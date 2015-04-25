@@ -32,6 +32,12 @@ module.exports = function(serviceManager) {
         });
     }
 
+    var search = function(req, res) {
+        var criteria = req.params.criteria;
+
+
+    }
+
     var router = express.Router();
 
     router.get('/:id', load);
