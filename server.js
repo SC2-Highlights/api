@@ -1,12 +1,22 @@
 var express = require('express');
 var pg = require('pg');
+var nodemailer = require('nodemailer');
+var bodyParser = require('body-parser');
 var config = require('./config');
 var routing = require('./routing');
 var dbHandler = require('./services/dbhandler');
+var multer = require('multer');
 
 var port = 3000;
 
 dbHandler.connect(config.db.credentials);
+
+var transporter = nodemailer.createTransport();
+
+var serviceManager = {
+    "dbClient": dbHandler,
+    "mail": transporter
+};
 
 var app = express();
 
@@ -18,7 +28,13 @@ app.use(function (req, res, next) {
     next();
 });
 
-routing(app, dbHandler);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer());
+
+routing(app, serviceManager);
 
 app.listen(config.port);
 console.log('listening on port: ' + config.port);
+
+

@@ -1,11 +1,11 @@
 var express = require('express');
 
-module.exports = function(dbClient) {
+module.exports = function(serviceManager) {
     var loadPost = function (req, res) {
         var id = req.params.id;
 
         var sql = 'SELECT * FROM homepage_post WHERE homepage_post_id = $1::int AND deleted IS FALSE';
-        var query = dbClient.query(sql, [id]);
+        var query = serviceManager.dbClient.query(sql, [id]);
 
         query.on('end', function(result) {
             res.status(200).json(result.rows[0]);
@@ -14,7 +14,7 @@ module.exports = function(dbClient) {
 
     var loadAllPost = function(req, res) {
         var sql = 'SELECT * FROM homepage_post WHERE deleted IS FALSE';
-        var query = dbClient.query(sql);
+        var query = serviceManager.dbClient.query(sql);
 
         console.log('loadallpost');
 
