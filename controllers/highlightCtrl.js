@@ -54,7 +54,7 @@ module.exports = function(serviceManager) {
             return;
         }
 
-        if(req.cookies.hasOwnProperty(id)) {
+        if(typeof req.cookies[id] !== 'undefined' && req.cookies[id] !== null){
             if(req.cookies[id] == rating){
                 res.status(200).json({"message":"successs"});
                 return;
