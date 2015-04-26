@@ -2,6 +2,7 @@ var express = require('express');
 var pg = require('pg');
 var nodemailer = require('nodemailer');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var config = require('./config');
 var routing = require('./routing');
 var dbHandler = require('./services/dbhandler');
@@ -28,9 +29,10 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer());
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(multer())
+app.use(cookieParser())
 
 routing(app, serviceManager);
 
