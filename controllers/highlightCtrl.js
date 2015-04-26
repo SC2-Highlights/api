@@ -47,7 +47,7 @@ module.exports = function(serviceManager) {
 
     var rate = function(req, res) {
         var id = req.params.id;
-        var rating = req.body.data.rating;
+        var rating = req.body.rating;
 
         if(rating != 1 && rating != 2 && rating != 3 && rating != 4 && rating != 5){
             res.status(400).json({"message":"failure"});
@@ -79,6 +79,7 @@ module.exports = function(serviceManager) {
             var newRating = (weight / voteCount).toFixed(1);
 
             var sql = 'UPDATE highlights SET rating = $1 WHERE highlight_id = $2::int';
+            serviceManager.dbClient.query(sql, [newRating, id]);
         });
 
         res.cookie(id, rating);
