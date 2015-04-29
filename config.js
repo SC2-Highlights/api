@@ -4,7 +4,7 @@ module.exports = {
         credentials: {
             user: 'sc2hl',
             password: 'mbmwinzolvqa',
-            host: '127.0.0.1',
+            host: 'sc2hl.coojdbzl5mz1.eu-west-1.rds.amazonaws.com',
             database: 'sc2hl',
             port: 5432,
             ssl: false
