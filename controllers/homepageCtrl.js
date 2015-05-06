@@ -16,10 +16,7 @@ module.exports = function(serviceManager) {
         var sql = 'SELECT * FROM homepage_post WHERE deleted IS FALSE';
         var query = serviceManager.dbClient.query(sql);
 
-        console.log('loadallpost');
-
         query.on('end', function(result) {
-            console.log(result.rows);
             res.status(200).json(result.rows);
         });
     }
