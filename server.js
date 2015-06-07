@@ -1,4 +1,5 @@
 var express = require('express');
+var swig = require('swig');
 var pg = require('pg');
 var nodemailer = require('nodemailer');
 var bodyParser = require('body-parser');
@@ -51,6 +52,14 @@ app.use(function(err, req, res) {
     error: {}
   });
 });
+
+
+// swig
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/views');
+app.set('view cache', false);
+swig.setDefaults({ cache: false });
 
 app.listen(config.port);
 console.log('listening on port: ' + config.port);

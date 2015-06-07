@@ -4,6 +4,7 @@ var eventCtrl = require('./controllers/eventCtrl');
 var contactCtrl = require('./controllers/contactCtrl');
 var suggestionCtrl = require('./controllers/suggestionCtrl');
 var replayCtrl = require('./controllers/replayCtrl');
+var staticCtrl = require('./controllers/staticCtrl');
 
 module.exports = function(app, serviceManager) {
     app.use('/highlight', highlightCtrl(serviceManager));
@@ -12,6 +13,7 @@ module.exports = function(app, serviceManager) {
     app.use('/contact', contactCtrl(serviceManager));
     app.use('/suggestion', suggestionCtrl(serviceManager));
     app.use('/submitreplay', replayCtrl(serviceManager));
+    app.use('/static', staticCtrl(serviceManager));
 
     app.use('/', function(req, res) {
         res.sendStatus(200);
