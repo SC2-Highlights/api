@@ -18,4 +18,4 @@ deploy:
             code: rsync --delete --exclude 'config.js' -r . wercker@api.sc2hl.com:/var/www/api-sc2hl/$WERCKER_GIT_BRANCH
         - script:
             name: restart server
-            code: forever restartall
+            code: ssh wercker@api.sc2hl.com "forever restartall"
