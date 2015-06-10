@@ -13,7 +13,7 @@ module.exports = function(serviceManager) {
     }
 
     var loadAllPost = function(req, res) {
-        var sql = "SELECT homepage_post.homepage_post_id, homepage_post.heading, homepage_post.type, homepage_post.timestamp, homepage_post.link, homepage_post.content, homepage_post.deleted, homepage_post.preview, highlights.yt_url FROM homepage_post LEFT JOIN highlights ON homepage_post.link LIKE '/highlight/' || highlights.highlight_id";
+        var sql = "SELECT homepage_post.homepage_post_id, homepage_post.heading, homepage_post.type, homepage_post.timestamp, homepage_post.link, homepage_post.content, homepage_post.deleted, homepage_post.preview, highlights.yt_url FROM homepage_post LEFT JOIN highlights ON homepage_post.link LIKE '/highlight/' || highlights.highlight_id WHERE homepage_post.deleted IS FALSE";
         var query = serviceManager.dbClient.query(sql);
 
         query.on('end', function(result) {
