@@ -15,4 +15,4 @@ deploy:
             code: sudo apt-get install rsync
         - script:
             name: rsync files
-            code: rsync --delete -r . wercker@api.sc2hl.com:/var/www/api-sc2hl/$WERCKER_GIT_BRANCH
+            code: rsync --delete --exclude 'config.js' -r . wercker@api.sc2hl.com:/var/www/api-sc2hl/$WERCKER_GIT_BRANCH
