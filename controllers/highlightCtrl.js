@@ -13,7 +13,7 @@ module.exports = function(serviceManager) {
     }
 
     var loadAll = function(req, res) {
-        var sql = 'SELECT * FROM highlights JOIN events USING (event_id)';
+        var sql = 'SELECT * FROM highlights JOIN events USING (event_id) WHERE deleted IS FALSE';
         var query = serviceManager.dbClient.query(sql);
 
         query.on('end', function(result) {
@@ -24,7 +24,7 @@ module.exports = function(serviceManager) {
     var loadAllEvent = function(req, res) {
         var id = req.params.id;
 
-        var sql = 'SELECT * FROM highlights JOIN events USING (event_id) WHERE event_id = $1::int';
+        var sql = 'SELECT * FROM highlights JOIN events USING (event_id) WHERE event_id = $1::int WHERE deleted IS FALSE';
         var query = serviceManager.dbClient.query(sql, [id]);
 
         query.on('end', function(result) {

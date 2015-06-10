@@ -1,0 +1,18 @@
+box: wercker/nodejs@1
+build:
+    steps:
+        - script:
+            name: install npm packages
+            code: sudo npm install
+deploy:
+    steps:
+        - add-to-known_hosts:
+            hostname: api.sc2hl.com
+        - add-ssh-key:
+            keyname: KEYNAME
+        - script:
+            name: install rsync
+            code: sudo apt-get install rsync
+        - script:
+            name: rsync files
+            code: rsync --delete -r web/ wercker@api.sc2hl.com:/var/www/api-sc2hl/$WERCKER_GIT_BRANCH
