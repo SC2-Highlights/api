@@ -24,7 +24,7 @@ module.exports = function(serviceManager) {
     var loadTopHighlight = function(req, res) {
     	var limit = req.params.limit;
 
-    	var sql = "SELECT highlight_id, title, date_added, yt_url, rating FROM highlights ORDER BY rating DESC LIMIT $1::int";
+    	var sql = "SELECT * FROM highlights ORDER BY (rate1 + rate2 + rate3 + rate4 + rate5) * rating DESC LIMIT $1::int";
 
     	var query = serviceManager.dbClient.query(sql, [limit]);
 
