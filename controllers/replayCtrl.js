@@ -38,9 +38,9 @@ module.exports = function(serviceManager) {
 
 			serviceManager.mail.sendMail({
             	from: 'www-data@sc2hl.com',
-            	to: 'simonhosk@gmail.com, contactsc2hl@gmail.com, d.t.verweij@gmail.com',
-            	subject: 'SC2HL - Contact',
-            	text: 'Name: ' + _data.name + '\nEmail: ' + _data.email + '\nMessage: ' + _data.message,
+            	to: 'sc2hlreplays@gmail.com',
+            	subject: 'SC2HL - Replay',
+            	text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nMessage: ' + _data.message,
             	attachments: [{path: path}]
         	}, function(error, response) {
         		if(error) {
