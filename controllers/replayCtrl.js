@@ -28,7 +28,7 @@ module.exports = function(serviceManager) {
 		}
 
 		if(!fail) {
-			var path = __dirname + '/../uploads/' + _data.name + '-' + req.files.file.originalname;
+			var path = '/tmp/uploads/' + _data.name + '-' + req.files.file.originalname;
 
 			fs.readFile(req.files.file.path, function(err, data) {
 				fs.writeFile(path, data, function (err) {
