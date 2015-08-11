@@ -22,7 +22,7 @@ module.exports = function(serviceManager) {
 		}
 
 		// Check form data
-		if(_data.email === '' || _data.name === '' || _data.message === '') {
+		if(_data.email === '' || _data.name === '' || _data.message === '' || _data.timestamp === '') {
 			errors.formdata = 'Please fill out all required fields.';
 			fail = true;
 		}
@@ -40,7 +40,7 @@ module.exports = function(serviceManager) {
             	from: 'www-data@sc2hl.com',
             	to: 'sc2hlreplays@gmail.com',
             	subject: 'SC2HL - Replay [' + _data.game + ']',
-            	text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nMessage: ' + _data.message,
+            	text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
             	attachments: [{path: path}]
         	}, function(error, response) {
         		if(error) {
