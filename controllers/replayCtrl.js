@@ -39,7 +39,7 @@ module.exports = function(serviceManager) {
 			serviceManager.mail.sendMail({
             	from: 'www-data@sc2hl.com',
             	to: 'sc2hlreplays@gmail.com',
-            	subject: 'SC2HL - Replay',
+            	subject: 'SC2HL - Replay [' + _data.game + ']',
             	text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nMessage: ' + _data.message,
             	attachments: [{path: path}]
         	}, function(error, response) {
