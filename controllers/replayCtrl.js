@@ -51,7 +51,7 @@ module.exports = function(serviceManager) {
         	});
 
 			data.success = true;
-			data.message = 'Your replay has been submitted succesfuly. Thanks!';
+			data.message = 'Your replay has been submitted successfully. Thanks!';
 		}
 
 		else {
