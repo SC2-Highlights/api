@@ -18,9 +18,17 @@ module.exports = function(serviceManager) {
         });
 	}
 
+    var staticReplaySite = function(req, res) {
+        res.render('submitReplay', {
+            title: 'SC2HL - Submit your replay',
+            description: 'Here you can submit your replays for our top community highlights series.'
+        });
+    }
+
     var router = express.Router();
 
     router.get('/highlight/:id', staticHighlight);
+    router.get('/submitreplay', staticReplaySite);
 
     return router;
 }
