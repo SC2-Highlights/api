@@ -14,13 +14,13 @@ module.exports = function(serviceManager) {
 		}
 
 		// Check filesize
-		if(req.files.file.size > 500000) {
+		else if(req.files.file.size > 500000) {
 			failed = true;
 			res.status(500).send('The selected file is too big.');
 		}
 
 		// Check form data
-		if(typeof _data.name === 'undefined' || typeof _data.message === 'undefined' || typeof _data.timestamp === 'undefined') {
+		else if (typeof _data.name === 'undefined' || typeof _data.message === 'undefined' || typeof _data.timestamp === 'undefined') {
 			failed = true;
 			res.status(500).send('Please fill out all required fields.');
 		}
