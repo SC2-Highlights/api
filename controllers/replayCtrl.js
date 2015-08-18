@@ -1,66 +1,62 @@
-var express = require('express');
-var fs      = require('fs');
+var express          = require('express');
+var fs               = require('fs');
 
 module.exports = function(serviceManager) {
 
 	var submitreplay = function(req, res) {
-		var fail   = false;
-		var errors = {};
-		var data   = {};
 		var _data  = JSON.parse(req.body.data);
+		var failed = false;
 
 		// Check mimetype and file extension
 		if(req.files.file.mimetype != 'application/octet-stream' || req.files.file.extension != 'SC2Replay') {
-			errors.filetype = 'The selected file "' + req.files.file.originalname + '" is not a Starcraft 2 replay';
-			fail = true;
+			failed = true;
+			res.status(500).send('The selected file is not a Starcraft 2 replay.');
 		}
 
 		// Check filesize
 		if(req.files.file.size > 500000) {
-			errors.filesize = 'The selected file "' + req.files.file.originalname + '" is too big';
-			fail = true;
+			failed = true;
+			res.status(500).send('The selected file is too big.');
 		}
 
 		// Check form data
-		if(_data.email === '' || _data.name === '' || _data.message === '' || _data.timestamp === '') {
-			errors.formdata = 'Please fill out all required fields.';
-			fail = true;
+		if(typeof _data.name === 'undefined' || typeof _data.message === 'undefined' || typeof _data.timestamp === 'undefined') {
+			failed = true;
+			res.status(500).send('Please fill out all required fields.');
 		}
 
-		if(!fail) {
-			var path = '/tmp/uploads/' + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
+		var path = '/tmp/uploads/' + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
 
+		if(!failed) {
 			fs.readFile(req.files.file.path, function(err, data) {
 				fs.writeFile(path, data, function (err) {
-					console.log('file saved to' + path);
+					if(err) {
+						res.status(500).send('Something went wrong uploading your replay. Please try again.');
+					}
+
+					else {
+						var mailData = {
+	            			from: 'www-data@sc2hl.com',
+				            to: 'sc2hlreplays@gmail.com',
+				            subject: 'SC2HL - Replay [' + _data.game + ']',
+				            text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
+				            attachments: [{path: path}]
+	        			}
+
+	        			serviceManager.mail.sendMail(mailData, function(error, response) {
+	        				if(error) {
+	        					console.log('Error sending an E-Mail: ' + error);
+	        					res.status(500).send('Something went wrong sending your E-Mail. Please try again.');
+	        				}
+
+	        				else {
+	        					res.send('Your replay has been submitted successfully. Thanks!');
+	        				}
+	        			});
+					}
 				});
 			});
-
-			serviceManager.mail.sendMail({
-            	from: 'www-data@sc2hl.com',
-            	to: 'sc2hlreplays@gmail.com',
-            	subject: 'SC2HL - Replay [' + _data.game + ']',
-            	text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
-            	attachments: [{path: path}]
-        	}, function(error, response) {
-        		if(error) {
-        			console.log(error);
-        		} else {
-
-        		}
-        	});
-
-			data.success = true;
-			data.message = 'Your replay has been submitted successfully. Thanks!';
 		}
-
-		else {
-			data.errors = errors;
-			data.success = false;
-		}
-
-		res.setHeader('Content-Type', 'application/json');
-    	res.send(JSON.stringify(data));
 	}
 
 	var router = express.Router();
