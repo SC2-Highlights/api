@@ -25,10 +25,18 @@ module.exports = function(serviceManager) {
         });
     }
 
+    var staticContestSite = function(req, res) {
+        res.render('contest', {
+            title: 'SC2HL - WCS Grandfinals Video Contest',
+            description: 'Submit your video by October 29th. $200 in prizes.'
+        });
+    }
+
     var router = express.Router();
 
     router.get('/highlight/:id', staticHighlight);
     router.get('/submitreplay', staticReplaySite);
+    router.get('/contest', staticContestSite);
 
     return router;
 }
