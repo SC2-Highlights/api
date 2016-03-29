@@ -9,5 +9,14 @@ module.exports = {
             port: 5432,
             ssl: false
         }
+    },
+
+    twitter: {
+        credentials: {
+            api_key: 'API_KEY',
+            api_secret: 'API_SECRET',
+            access_token: 'ACCESS_TOKEN',
+            access_secret: 'ACCESS_TOKEN_SECRET'
+        }
     }
 }
