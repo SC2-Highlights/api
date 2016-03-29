@@ -29,3 +29,5 @@ config.js
 
 # IDEs
 .idea
+*.sublime-workspace
+*.sublime-project

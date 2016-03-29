@@ -17,7 +17,8 @@ var transporter = nodemailer.createTransport();
 
 var serviceManager = {
     "dbClient": dbHandler,
-    "mail": transporter
+    "mail": transporter,
+    "twitter": config.twitter.credentials
 };
 
 var app = express();

@@ -6,6 +6,7 @@ var suggestionCtrl = require('./controllers/suggestionCtrl');
 var replayCtrl = require('./controllers/replayCtrl');
 var contestCtrl = require('./controllers/contestCtrl');
 var staticCtrl = require('./controllers/staticCtrl');
+var twitterCtrl = require('./controllers/twitterCtrl');
 
 module.exports = function(app, serviceManager) {
     app.use('/highlight', highlightCtrl(serviceManager));
@@ -16,6 +17,7 @@ module.exports = function(app, serviceManager) {
     app.use('/submitreplay', replayCtrl(serviceManager));
     app.use('/contest', contestCtrl(serviceManager));
     app.use('/static', staticCtrl(serviceManager));
+    app.use('/twitter', twitterCtrl(serviceManager));
 
     app.use('/', function(req, res) {
         res.sendStatus(200);
