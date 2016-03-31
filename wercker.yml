@@ -1,4 +1,6 @@
 box: wercker/nodejs@1
+steps:
+  - sjoerdmulder/rsync-deploy@0.1.0
 build:
     steps:
         - script:
