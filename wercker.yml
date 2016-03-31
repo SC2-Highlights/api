@@ -9,7 +9,7 @@ deploy:
         - add-to-known_hosts:
             hostname: api.sc2hl.com
         - add-ssh-key:
-            keyname: KEY
+            keyname: nnnn
         - script:
             name: rsync files
             code: rsync -av -e "ssh -i $KEY_PRIVATE" --delete --exclude 'config.js' -r . wercker@api.sc2hl.com:/var/www/api-sc2hl/$WERCKER_GIT_BRANCH
