@@ -10,7 +10,7 @@ deploy:
             hostname: api.sc2hl.com
         - add-ssh-key:
             keyname: KEY
-        - rsync-deploy
+        - rsync-deploy:
             host: api.sc2hl.com
             directory: /var/www/api-sc2hl/$WERCKER_GIT_BRANCH
             user: wercker
