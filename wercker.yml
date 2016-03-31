@@ -1,4 +1,4 @@
-box: fauda/nodejs-deploy
+box: wercker/nodejs@1
 build:
     steps:
         - script:
