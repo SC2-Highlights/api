@@ -1,4 +1,4 @@
-box: nodesource/trusty
+box: fauda/nodejs-deploy
 build:
     steps:
         - script:
@@ -10,9 +10,6 @@ deploy:
             hostname: api.sc2hl.com
         - add-ssh-key:
             keyname: KEYNAME
-        - script:
-            name: install rsync
-            code: sudo apt-get install rsync
         - script:
             name: rsync files
             code: rsync --delete --exclude 'config.js' -r . wercker@api.sc2hl.com:/var/www/api-sc2hl/$WERCKER_GIT_BRANCH
