@@ -1,6 +1,4 @@
 box: wercker/nodejs@1
-steps:
-  - sjoerdmulder/rsync-deploy@0.1.0
 build:
     steps:
         - script:
@@ -12,7 +10,7 @@ deploy:
             hostname: api.sc2hl.com
         - add-ssh-key:
             keyname: KEY
-        - rsync-deploy:
+        - sjoerdmulder/rsync-deploy@0.1.0:
             host: api.sc2hl.com
             directory: /var/www/api-sc2hl/$WERCKER_GIT_BRANCH
             user: wercker
