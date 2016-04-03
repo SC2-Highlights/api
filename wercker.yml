@@ -10,11 +10,14 @@ deploy:
             hostname: api.sc2hl.com
         - add-ssh-key:
             keyname: KEY
+        - script:
+            name: save private key
+            code: echo $KEY_PRIVATE > ~/id_rsa
         - sjoerdmulder/rsync-deploy@0.1.0:
             host: api.sc2hl.com
             directory: /var/www/api-sc2hl/$WERCKER_GIT_BRANCH
             user: wercker
-            sshkey: $KEY_PRIVATE
+            sshkey: ~/id_rsa
         - script:
             name: restart server
-            code: ssh wercker@api.sc2hl.com "forever restartall"
+            code: ssh -i ~/id_rsa wercker@api.sc2hl.com "forever restartall"
