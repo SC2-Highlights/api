@@ -7,10 +7,8 @@ module.exports = function(serviceManager) {
 		var _data  = JSON.parse(req.body.data);
 		var failed = false;
 
-		console.log(req.files);
-
 		// Check mimetype and file extension
-		if(req.files.file.size > 0 && (req.files.file.mimetype != 'application/octet-stream' || req.files.file.extension != 'SC2Replay')) {
+		if(req.files.file.mimetype != 'application/octet-stream' || req.files.file.extension != 'SC2Replay') {
 			failed = true;
 			res.status(500).send('The selected file is not a Starcraft 2 replay.');
 		}
@@ -27,11 +25,6 @@ module.exports = function(serviceManager) {
 			res.status(500).send('Please fill out all required fields.');
 		}
 
-		else if(typeof _data.video === 'undefined' && req.files.file.size == 0) {
-			failed = true;
-			res.status(500).send('Please include a replay or a link YouTube/Twitch link to your highlight.');
-		}
-
 		var category = '';
 
 		if(_data.category === 'Plays') {
@@ -46,7 +39,7 @@ module.exports = function(serviceManager) {
 			category = 'Funny';
 		}
 
-		if(req.files.file.size != 0 && !failed) {
+		if(!failed) {
 			var path = '/tmp/uploads/' + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
 
 			fs.readFile(req.files.file.path, function(err, data) {
@@ -58,7 +51,7 @@ module.exports = function(serviceManager) {
 					else {
 						var mailData = {
 							from: 'www-data@sc2hl.com',
-							to: 'nikolaigulatz@googlemail.com',
+							to: 'sc2hlreplays@gmail.com',
 							subject: 'SC2HL - Replay [' + _data.game + '][' + category + ']',
 							text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nLink: ' + _data.video + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
 							attachments: [{path: path}]}
@@ -76,24 +69,7 @@ module.exports = function(serviceManager) {
 						}
 					});
 			});
-		} else if(req.files.file.size == 0 && !failed) {
-			var mailData = {
-				from: 'www-data@sc2hl.com',
-				to: 'nikolaigulatz@googlemail.com',
-				subject: 'SC2HL - Replay [' + _data.game + '][' + category + ']',
-				text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nLink: ' + _data.video + '\nTimestamp(s): ' + _data.timestamp + '\nMessage: ' + _data.message,
-			}
-			serviceManager.mail.sendMail(mailData, function(error, response) {
-				if(error) {
-					console.log('Error sending an E-Mail: ' + error);
-					res.status(500).send('Something went wrong sending your E-Mail. Please try again.');
-				}
-
-				else {
-					res.send('Your replay has been submitted successfully. Thanks!');
-				}
-			});
-		}
+		} 
 	}
 
 	var router = express.Router();
