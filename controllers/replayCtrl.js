@@ -25,23 +25,9 @@ module.exports = function(serviceManager) {
 			res.status(500).send('Please fill out all required fields.');
 		}
 
-		var category = '';
-
-		if(_data.category === 'Plays') {
-			category = 'Plays';
-		}
-
-		else if(_data.category === 'Fails') {
-			category = 'Fails';
-		}
-
-		else if(_data.categoory === 'Funny') {
-			category = 'Funny';
-		}
+		var path = '/tmp/uploads/' + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
 
 		if(!failed) {
-			var path = '/tmp/uploads/' + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
-
 			fs.readFile(req.files.file.path, function(err, data) {
 				fs.writeFile(path, data, function (err) {
 					if(err) {
@@ -49,32 +35,42 @@ module.exports = function(serviceManager) {
 					}
 
 					else {
-						var mailData = {
-							from: 'www-data@sc2hl.com',
-							to: 'sc2hlreplays@gmail.com',
-							subject: 'SC2HL - Replay [' + _data.game + '][' + category + ']',
-							text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nLink: ' + _data.video + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
-							attachments: [{path: path}]}
+						var category = '';
 
-							serviceManager.mail.sendMail(mailData, function(error, response) {
-								if(error) {
-									console.log('Error sending an E-Mail: ' + error);
-									res.status(500).send('Something went wrong sending your E-Mail. Please try again.');
-								}
-
-								else {
-									res.send('Your replay has been submitted successfully. Thanks!');
-								}
-							});
+						if(_data.category == 'Plays') {
+							category = 'Plays';
 						}
-					});
+
+						else if(_data.category == 'Failed') {
+							category = 'Fails';
+						}
+
+						var mailData = {
+		            			from: 'www-data@sc2hl.com',
+					            to: 'sc2hlreplays@gmail.com',
+					            subject: 'SC2HL - Replay [' + _data.game + '][' + category + ']',
+					            text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
+					            attachments: [{path: path}]}
+
+		        				serviceManager.mail.sendMail(mailData, function(error, response) {
+			        				if(error) {
+			        					console.log('Error sending an E-Mail: ' + error);
+			        					res.status(500).send('Something went wrong sending your E-Mail. Please try again.');
+			        				}
+
+			        				else {
+			        					res.send('Your replay has been submitted successfully. Thanks!');
+			        				}
+		        				});
+					}
+				});
 			});
-		} 
+		}
 	}
 
 	var router = express.Router();
 
-	router.post('/', submitreplay);
+    router.post('/', submitreplay);
 
-	return router;
+    return router;
 }
