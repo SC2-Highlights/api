@@ -25,44 +25,54 @@ module.exports = function(serviceManager) {
 			res.status(500).send('Please fill out all required fields.');
 		}
 
-		var path = '/tmp/uploads/' + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
+		var uploadDir = '/tmp/uploads/';
+		var path = uploadDir + _data.name + '-' + new Date().getTime() / 1000 + '.SC2Replay';
 
 		if(!failed) {
-			fs.readFile(req.files.file.path, function(err, data) {
-				fs.writeFile(path, data, function (err) {
-					if(err) {
+			// Create the upload directory if it doesn't exist
+			fs.mkdir(uploadDir,function(err) {
+				if(err) {
+					// If the directory exists, ignore the error
+					if (err.code !== 'EEXIST') {
 						res.status(500).send('Something went wrong uploading your replay. Please try again.');
 					}
-
-					else {
-						var category = '';
-
-						if(_data.category == 'Plays') {
-							category = 'Plays';
+				}
+				fs.readFile(req.files.file.path, function(err, data) {
+					fs.writeFile(path, data, function (err) {
+						if(err) {
+							res.status(500).send('Something went wrong uploading your replay. Please try again.');
 						}
 
-						else if(_data.category == 'Failed') {
-							category = 'Fails';
+						else {
+							var category = '';
+
+							if(_data.category == 'Plays') {
+								category = 'Plays';
+							}
+
+							else if(_data.category == 'Failed') {
+								category = 'Fails';
+							}
+
+							var mailData = {
+			            			from: 'www-data@sc2hl.com',
+						            to: 'sc2hlreplays@gmail.com',
+						            subject: 'SC2HL - Replay [' + _data.game + '][' + category + ']',
+						            text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
+						            attachments: [{path: path}]}
+
+			        				serviceManager.mail.sendMail(mailData, function(error, response) {
+				        				if(error) {
+				        					console.log('Error sending an E-Mail: ' + error);
+				        					res.status(500).send('Something went wrong sending your E-Mail. Please try again.');
+				        				}
+
+				        				else {
+				        					res.send('Your replay has been submitted successfully. Thanks!');
+				        				}
+			        				});
 						}
-
-						var mailData = {
-		            			from: 'www-data@sc2hl.com',
-					            to: 'sc2hlreplays@gmail.com',
-					            subject: 'SC2HL - Replay [' + _data.game + '][' + category + ']',
-					            text: 'Username: ' + _data.name + '\nEmail: ' + _data.email + '\nTimestamp: ' + _data.timestamp + '\nMessage: ' + _data.message,
-					            attachments: [{path: path}]}
-
-		        				serviceManager.mail.sendMail(mailData, function(error, response) {
-			        				if(error) {
-			        					console.log('Error sending an E-Mail: ' + error);
-			        					res.status(500).send('Something went wrong sending your E-Mail. Please try again.');
-			        				}
-
-			        				else {
-			        					res.send('Your replay has been submitted successfully. Thanks!');
-			        				}
-		        				});
-					}
+					});
 				});
 			});
 		}
